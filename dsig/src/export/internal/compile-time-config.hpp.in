@@ -1,0 +1,14 @@
+#pragma once
+
+#cmakedefine HBSS_SCHEME @HBSS_SCHEME@
+
+#cmakedefine HASHING_SCHEME @HASHING_SCHEME@
+
+#cmakedefine LOG_INF_BATCH_SIZE @LOG_INF_BATCH_SIZE@
+
+#cmakedefine WOTS_LOG_SECRETS_DEPTH @WOTS_LOG_SECRETS_DEPTH@
+
+#cmakedefine HORS_SECRETS_PER_SIGNATURE @HORS_SECRETS_PER_SIGNATURE@
+
+// Also edit ../config.hpp, add `undef` statements to clean the preprocessor
+// namespace Also edit ../../sanity
