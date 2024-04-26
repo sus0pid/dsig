@@ -12,6 +12,8 @@ set(HBSS_SCHEMES "hors-merkle" "hors-completed" "wots")
 set(HASHING_SCHEMES "blake3" "siphash" "haraka" "sha256")
 
 set(DSIG_TESTS "ping" "cpu-tput" "tput" "scalability" "synthetic")
+set(DSIG_BATCH_TESTS "ping" "cpu-tput")
+set(DSIG_PING_TEST "ping")
 
 # We don't want to rebuild pinning.o every time, so we create a library.
 add_library(CommonLib pinning.cpp)
@@ -87,7 +89,7 @@ if(NOT SLIM_BUILD)
   foreach(hash ${HASHING_SCHEME})
   foreach(logb ${LOG_INF_BATCH_SIZE})
   foreach(k ${HORS_SECRETS_PER_SIGNATURE})
-    foreach(test ${DSIG_TESTS})
+    foreach(test ${DSIG_PING_TEST})
       list(GET HASHING_SCHEMES ${hash} readable_hash)
       set(BINARY dsig-${test}-hors-merkle-${readable_hash}-${logb}-${k})
       add_executable(${BINARY}
@@ -119,7 +121,7 @@ if(NOT SLIM_BUILD)
   foreach(hash ${HASHING_SCHEME})
   foreach(logb ${LOG_INF_BATCH_SIZE})
   foreach(k ${HORS_SECRETS_PER_SIGNATURE})
-    foreach(test ${DSIG_TESTS})
+    foreach(test ${DSIG_PING_TEST})
       list(GET HASHING_SCHEMES ${hash} readable_hash)
       set(BINARY dsig-${test}-hors-completed-${readable_hash}-${logb}-${k})
       add_executable(${BINARY}
@@ -146,12 +148,44 @@ if(NOT SLIM_BUILD)
   # cmake-format: off
   set(HASHING_SCHEME 0 2 3)
   set(LOG_INF_BATCH_SIZE 7)
-  set(WOTS_LOG_SECRETS_DEPTH 1 2 3 4)
+  set(WOTS_LOG_SECRETS_DEPTH 2)
   # cmake-format: on
   foreach(hash ${HASHING_SCHEME})
   foreach(logb ${LOG_INF_BATCH_SIZE})
   foreach(logw ${WOTS_LOG_SECRETS_DEPTH})
     foreach(test ${DSIG_TESTS})
+      list(GET HASHING_SCHEMES ${hash} readable_hash)
+      set(BINARY dsig-${test}-wots-${readable_hash}-${logb}-${logw})
+      add_executable(${BINARY}
+                     ${HEADER_TIDER} test/${test}.cpp ${COMMON_SOURCE})
+      target_compile_definitions(
+        ${BINARY}
+        PUBLIC HASHING_SCHEME=${hash}
+               LOG_INF_BATCH_SIZE=${logb}
+               WOTS_LOG_SECRETS_DEPTH=${logw}
+               HBSS_SCHEME=2)
+      target_link_libraries(
+        ${BINARY}
+        rt
+        pthread
+        dl
+        ${CONAN_LIBS}
+        ${COMMON_LIBRARIES})
+    endforeach()
+  endforeach()
+  endforeach()
+  endforeach()
+
+  # WOTS - more configs (note: WOTS_LOG_SECRETS_DEPTH of 2 is already covered above)
+  # cmake-format: off
+  set(HASHING_SCHEME 0 2 3)
+  set(LOG_INF_BATCH_SIZE 7)
+  set(WOTS_LOG_SECRETS_DEPTH 1 3 4)
+  # cmake-format: on
+  foreach(hash ${HASHING_SCHEME})
+  foreach(logb ${LOG_INF_BATCH_SIZE})
+  foreach(logw ${WOTS_LOG_SECRETS_DEPTH})
+    foreach(test ${DSIG_PING_TEST})
       list(GET HASHING_SCHEMES ${hash} readable_hash)
       set(BINARY dsig-${test}-wots-${readable_hash}-${logb}-${logw})
       add_executable(${BINARY}
@@ -183,7 +217,7 @@ if(NOT SLIM_BUILD)
   foreach(hash ${HASHING_SCHEME})
   foreach(logb ${LOG_INF_BATCH_SIZE})
   foreach(logw ${WOTS_LOG_SECRETS_DEPTH})
-    foreach(test ${DSIG_TESTS})
+    foreach(test ${DSIG_BATCH_TESTS})
       list(GET HASHING_SCHEMES ${hash} readable_hash)
       set(BINARY dsig-${test}-wots-${readable_hash}-${logb}-${logw})
       add_executable(${BINARY}
