@@ -82,7 +82,7 @@ if(NOT SLIM_BUILD)
   # cmake-format: off
   set(HASHING_SCHEME 0 2 3)
   set(LOG_INF_BATCH_SIZE 7)
-  set(HORS_SECRETS_PER_SIGNATURE 12 14 16 19 24 32 64)
+  set(HORS_SECRETS_PER_SIGNATURE 12 16 32 64)
   # cmake-format: on
   foreach(hash ${HASHING_SCHEME})
   foreach(logb ${LOG_INF_BATCH_SIZE})
@@ -114,7 +114,7 @@ if(NOT SLIM_BUILD)
   # cmake-format: off
   set(HASHING_SCHEME 0 2 3)
   set(LOG_INF_BATCH_SIZE 7)
-  set(HORS_SECRETS_PER_SIGNATURE 12 16 24 32 64)
+  set(HORS_SECRETS_PER_SIGNATURE 12 16 32 64)
   # cmake-format: on
   foreach(hash ${HASHING_SCHEME})
   foreach(logb ${LOG_INF_BATCH_SIZE})
