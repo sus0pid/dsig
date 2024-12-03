@@ -59,6 +59,7 @@ public:
     return sig;
   }
 
+  /*wotsplus signature generation*/
   template <typename S = Signature, std::enable_if_t<std::is_same_v<S, WotsSignature>, bool> = true>
   WotsSignature sign(uint8_t const* msg, size_t const msg_len) const {
     WotsSignature sig{pk_nonce, pk_sig.value(), nonce};
@@ -89,7 +90,7 @@ public:
   }
 
 private:
-  Secrets secrets;
+  Secrets secrets; /*generate pk*/
   std::unique_ptr<HorsMerkleTree> hors_pk_tree;
   Seed seed;
 
@@ -98,6 +99,7 @@ private:
 
   Nonce nonce;
 
+  /*generate pks from sks and store the intermediate results*/
   void generate_secrets() {
     secrets.front() = crypto::hash::blake3<SecretRow>(seed);
     for (size_t i = 0; i + 1 < SecretsDepth; i++) {
@@ -128,13 +130,14 @@ private:
     pk_nonce = sk_nonce(seed);
   }
 
+  /*hash pk*/
   void generate_pk_hash() {
     auto hasher = crypto::hash::blake3_init();
     crypto::hash::blake3_update(hasher, pk_nonce);
     if constexpr (HbssScheme == HorsMerkle) {
       crypto::hash::blake3_update(hasher, hors_pk_tree->roots());
     } else {
-      crypto::hash::blake3_update(hasher, secrets.back());
+      crypto::hash::blake3_update(hasher, secrets.back()); /*hash the pk*/
     }
     pk_hash = crypto::hash::blake3_final(hasher);
   }

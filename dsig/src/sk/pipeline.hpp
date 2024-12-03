@@ -47,6 +47,7 @@ class SkPipeline {
       });
     }
    private:
+    /*eddsa sign the merkle tree root*/
     void sign(InfCrypto& inf_crypto) {
       for (size_t i = 0; i < Size; i++)
         to_send.pk_hashes[i] = sks[i]->getPkHash();

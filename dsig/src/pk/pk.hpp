@@ -101,6 +101,7 @@ private:
     state = Ready;
   }
 
+  /*verify eddsa signature*/
   bool verifyPkSig(BatchedInfSignature const& pk_sig) const {
     if (std::memcmp(&pk_sig.root_sig, &root_sig, sizeof(root_sig)) != 0) {
       fmt::print(stderr, "Pk root sig does not match: {} vs {}!\n",
@@ -173,6 +174,7 @@ private:
     return std::memcmp(crypto::hash::blake3_final(hasher).data(), exp_pk_hash.data(), exp_pk_hash.size()) == 0;
   }
 
+  /*verify wotsplus signature*/
   bool verifyHbss(WotsSignature const& sig, uint8_t const* const begin,
                   uint8_t const* const end) const {
     auto sig_hashes = sig.secrets;

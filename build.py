@@ -329,7 +329,7 @@ COMPILER_PATH = config["PATH"]
 if COMPILER_PATH:
     env["PATH"] = "{}:".format(COMPILER_PATH) + env["PATH"]
 
-
+# generate makefile targets
 def convert_target(target, compiler, buildtype, gen_tidy, test_pkg):
     prefix = os.path.join(".deps", compiler, buildtype)
 

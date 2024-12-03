@@ -14,8 +14,8 @@ target_link_libraries(audit-client ${CONAN_LIBS})
 add_executable(audit-server ${HEADER_TIDER} auditable/server.cpp)
 target_link_libraries(audit-server ${CONAN_LIBS})
 
-# add_executable(dsigdemo ${HEADER_TIDER} main.cpp)
-# target_link_libraries(dsigdemo ${CONAN_LIBS})
+add_executable(dsigdemo ${HEADER_TIDER} main.cpp)
+target_link_libraries(dsigdemo ${CONAN_LIBS})
 
 # add_executable(dsig-ping ${HEADER_TIDER} ping.cpp)
 # target_link_libraries(dsig-ping ${CONAN_LIBS})
