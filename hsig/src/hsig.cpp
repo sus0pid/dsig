@@ -1,7 +1,8 @@
-#include "hybrid_signature.hpp"
 #include <iostream>
 #include <thread>
 #include <stdexcept>
+
+#include "hsig.hpp"
 
 namespace hybrid_sig {
 
