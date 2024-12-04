@@ -12,4 +12,5 @@ add_library(hsig STATIC hsig.cpp)
 add_executable(test-hsig test/main.cpp)
 target_link_libraries(
         test-hsig
-        ${CONAN_LIBS})
+        ${CONAN_LIBS}
+        PRIVATE hsig)
