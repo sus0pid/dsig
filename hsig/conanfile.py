@@ -21,6 +21,7 @@ class DoryHsigConan(ConanFile):
     }
     generators = "cmake"
     exports_sources = "src/*"
+    python_requires = "dory-compiler-options/0.0.1@dory/stable"
 
     def requirements(self):
         # Add dependencies here if required
