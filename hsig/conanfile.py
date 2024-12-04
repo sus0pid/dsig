@@ -3,7 +3,7 @@
 from conans import ConanFile, CMake
 
 class DoryHsigConan(ConanFile):
-    name = "hsig"
+    name = "dory-hsig"
     version = "0.1.0"
     license = "MIT"
     url = "TODO: Add your project URL here"
