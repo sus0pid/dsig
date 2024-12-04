@@ -1,6 +1,7 @@
 shared : []
 extern : []
 third-party : []
+hsig: []
 
 memstore : [shared, extern]
 
