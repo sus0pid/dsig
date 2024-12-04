@@ -2,7 +2,7 @@
 
 from conans import ConanFile, CMake
 
-class HsigConan(ConanFile):
+class DoryHsigConan(ConanFile):
     name = "hsig"
     version = "0.1.0"
     license = "MIT"
