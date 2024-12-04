@@ -1,5 +1,6 @@
-from conans import ConanFile, CMake
+#!/usr/bin/env python3
 
+from conans import ConanFile, CMake
 
 class HsigConan(ConanFile):
     name = "hsig"
