@@ -3,15 +3,15 @@ extern : []
 third-party : []
 hsig: []
 
-memstore : [shared, extern]
-
-ctrl : [shared, extern, memory]
-conn : [shared, ctrl, memstore, third-party]
-crypto : [shared, memstore, third-party]
-special : [third-party, shared]
-memory : [special, shared]
-rpc : [shared]
-ubft : [shared, crypto, ctrl, conn, extern, memstore, third-party, rpc]
-
-dsig : [conn, crypto, ctrl, shared, memstore]
-dsig-apps : [ctrl, conn, shared, memstore, rpc, third-party, ubft, special, dsig]
+#memstore : [shared, extern]
+#
+#ctrl : [shared, extern, memory]
+#conn : [shared, ctrl, memstore, third-party]
+#crypto : [shared, memstore, third-party]
+#special : [third-party, shared]
+#memory : [special, shared]
+#rpc : [shared]
+#ubft : [shared, crypto, ctrl, conn, extern, memstore, third-party, rpc]
+#
+#dsig : [conn, crypto, ctrl, shared, memstore]
+#dsig-apps : [ctrl, conn, shared, memstore, rpc, third-party, ubft, special, dsig]
