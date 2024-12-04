@@ -48,10 +48,10 @@ class DoryHsigConan(ConanFile):
         cmake.build()
 
     def package(self):
-        self.copy("*.hpp", dst="include/hsig", src="src")
+        # self.copy("*.hpp", dst="include/hsig", src="src")
         self.copy("*.a", dst="lib", keep_path=False)
         self.copy("*.so", dst="lib", keep_path=False)
-        self.copy("*hsig_test", dst="bin", src="bin")  # Test executable
+        self.copy("*", dst="bin", src="bin")
 
     def deploy(self):
         self.copy("*", dst="bin", src="bin")
