@@ -10,9 +10,5 @@ add_definitions(-DBINARY_BUILD_TIME="${BUILD_TIME}")
 
 add_executable(test-hsig /test/main.cpp)
 target_link_libraries(
-        ${BINARY}
-        rt
-        pthread
-        dl
-        ${CONAN_LIBS}
-        ${COMMON_LIBRARIES})
+        test-hsig
+        ${CONAN_LIBS})
