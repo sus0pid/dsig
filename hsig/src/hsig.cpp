@@ -1,6 +1,6 @@
 #include <iostream>
 
-include "hsig.hpp"
+#include "hsig.hpp"
 
 namespace hybrid_sig {
 
