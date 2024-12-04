@@ -1,4 +1,4 @@
-#include "hsig.hpp"
+#include "../hsig.hpp"
 
 int main() {
   hybrid_sig::HybridSigConfig config{256, 5, 10, std::chrono::milliseconds(1000)};
