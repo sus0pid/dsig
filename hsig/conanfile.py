@@ -57,7 +57,10 @@ class DoryHsigConan(ConanFile):
         self.copy("*", dst="bin", src="bin")
 
     def package_info(self):
-        self.copy("*", dst="bin", src="bin")
+        self.cpp_info.libs = ["doryhsig"]
+        self.cpp_info.cxxflags = self.python_requires[
+            "dory-compiler-options"
+        ].module.get_cxx_options_for(self.settings.compiler, self.settings.build_type)
 
 
 if __name__ == "__main__":
