@@ -6,7 +6,7 @@
 
 #include "config.hpp"
 
-namespace hsig {
+namespace dory::hsig {
 
   enum HashingSchemes { Blake3 = 0, SipHash = 1, Haraka = 2, SHA256 = 3 };
   HashingSchemes constexpr HashingScheme = static_cast<HashingSchemes>(HASHING_SCHEME);

@@ -6,7 +6,7 @@
 #include "hsig-types.hpp"
 #include "config.hpp"
 
-namespace hsig {
+namespace dory::hsig {
 
 class Hsig {
   /*a row of chain([sk0-skl1+l2], i)*/
@@ -15,7 +15,7 @@ class Hsig {
   using Secrets = std::array<SecretRow, SecretsDepth>; /*secretdepth == w*/
 
  public:
-  Hsig(HsigConfig const &config, int ServiceID);
+  Hsig(HsigConfig const &config, int service_id);
   ~Hsig();
 
   // As Hsig manages a thread, it should not be moved.
@@ -37,6 +37,7 @@ class Hsig {
 //  void stop_background();
 
  private:
+  int service_id;
   HsigConfig config;
   Secrets secrets; /*one sk(secrets.front()) + one pk(pk = secrets.back())*/
   Seed seed;

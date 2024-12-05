@@ -5,15 +5,15 @@
 #include "hash-util.hpp"
 #include "random.hpp"
 
-namespace hsig {
+namespace dory::hsig {
 
-Hsig::Hsig(HsigConfig const &config, int ServiceID)
+Hsig::Hsig(HsigConfig const &config, int service_id)
     : config(config),
       seed(RandomGenerator().generate()),  // Use RandomGenerator to initialize the seed
       pk_nonce{}, pk_hash{}, nonce{} {
 
-  std::cout << "Initializing Hsig with ServiceID: " << ServiceID << std::endl;
-
+  std::cout << "Initializing Hsig with ServiceID: " << service_id << std::endl;
+  service_id = service_id;
   wots_pkgen();
   wots_pkhash();
   gen_signonce();

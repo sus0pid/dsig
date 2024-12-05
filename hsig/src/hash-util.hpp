@@ -17,7 +17,7 @@
 
 #include "hsig-types.hpp"
 
-namespace hsig {
+namespace dory::hsig {
 template <typename Duration>
 static void busy_sleep(Duration duration) {
   auto const start = std::chrono::steady_clock::now();

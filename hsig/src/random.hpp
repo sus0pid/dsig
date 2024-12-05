@@ -6,7 +6,7 @@
 
 #include "hsig-types.hpp"
 
-namespace hsig {
+namespace dory::hsig {
 
 class RandomGenerator {
  public:

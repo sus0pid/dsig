@@ -1,20 +1,17 @@
-#ifndef HSIG_CONFIG_HPP
-#define HSIG_CONFIG_HPP
-
-#include "hsig-types.hpp"
+#pragma once
 
 #ifndef HASHING_SCHEME
 #error "Define HASHING_SCHEME"
 #endif
-
-namespace hsig {
-//#if HBSS_SCHEME == WOTS
 #ifndef WOTS_LOG_SECRETS_DEPTH
 #error "Define WOTS_LOG_SECRETS_DEPTH"
 #endif
 #else
 #define WOTS_LOG_SECRETS_DEPTH 2
 #endif
+
+namespace dory::hsig {
+
 size_t constexpr LogSecretsDepth = WOTS_LOG_SECRETS_DEPTH; /*log_w*/
 size_t constexpr SecretsDepth = 1 << LogSecretsDepth; /*w*/
 
@@ -29,7 +26,6 @@ size_t constexpr L2 = PrecomputedL2[LogSecretsDepth];
 
 size_t constexpr SecretsPerSecretKey = L1 + L2; /*L*/
 size_t constexpr SecretsPerSignature = SecretsPerSecretKey; /*L*/
+
+
 }
-
-
-#endif  // HSIG_CONFIG_HPP
