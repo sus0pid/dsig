@@ -8,14 +8,14 @@
 
 int main() {
 
-  HsigConfig config;
+  hsig::HsigConfig config;
   config.key_size = 32; // Example key size in bytes
   config.fetch_threshold = 10; // Receiver PK threshold
   config.fetch_batch_size = 20; // Number of PKs to fetch
   config.sender_interval = std::chrono::milliseconds(100); // 100ms interval
   int service_id = 42;
 
-  hsig::Hsig hsig(config, service_id);
+  hsig::Hsig hsig(&config, service_id);
 
   std::string data = "Test message";
   std::string signature = hsig.sign(data);
@@ -25,18 +25,6 @@ int main() {
   } else {
     std::cout << "Verification failed!" << std::endl;
   }
-
-  // Test PK generation
-  std::cout << "Generating PK..." << std::endl;
-  hsig.wots_pkgen();
-
-  // Test PK hashing
-  std::cout << "Hashing PK..." << std::endl;
-  hsig.wots_pkhash();
-
-  // Test nonce generation for signing
-  std::cout << "Generating signing nonce..." << std::endl;
-  hsig.gen_signonce();
 
   return 0;
 }

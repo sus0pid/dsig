@@ -3,6 +3,7 @@
 #include <dory/crypto/hash/blake3.hpp>
 #include "hsig.hpp"
 #include "hash-util.hpp"
+#include "random.hpp"
 
 namespace hsig {
 
@@ -13,12 +14,9 @@ Hsig::Hsig(HsigConfig const &config, int ServiceID)
 
   std::cout << "Initializing Hsig with ServiceID: " << ServiceID << std::endl;
 
-  // Initialize the secrets to default values
-  for (auto &row : secrets) {
-    for (auto &secret : row) {
-      secret.fill(0);  // Set all secret values to 0 initially
-    }
-  }
+  wots_pkgen();
+  wots_pkhash();
+  gen_signonce();
 
 }
 
@@ -69,11 +67,11 @@ void Hsig::wots_pkhash() {
 
   auto hasher = crypto::hash::blake3_init();
   crypto::hash::blake3_update(hasher, pk_nonce);
-  if constexpr (HbssScheme == HorsMerkle) {
-    crypto::hash::blake3_update(hasher, hors_pk_tree->roots());
-  } else {
-    crypto::hash::blake3_update(hasher, secrets.back()); /*hash the pk*/
-  }
+//  if constexpr (HbssScheme == HorsMerkle) {
+//    crypto::hash::blake3_update(hasher, hors_pk_tree->roots());
+//  } else {
+  crypto::hash::blake3_update(hasher, secrets.back()); /*hash the pk*/
+//  }
   pk_hash = crypto::hash::blake3_final(hasher);
 }
 

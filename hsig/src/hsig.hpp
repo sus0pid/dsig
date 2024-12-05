@@ -29,15 +29,6 @@ class Hsig {
   bool verify(const std::string &data, const std::string &signature);
 
 
-  // pk generation
-  void wots_pkgen();
-
-  // hash pk
-  void wots_pkhash();
-
-  // unique signature nonce
-  void gen_signonce();
-
 
 //  Signature sign(const uint8_t *message, size_t message_len);
 //  bool verify(const uint8_t *message, size_t message_len, const Signature &sig);
@@ -54,7 +45,14 @@ class Hsig {
   Hash pk_hash; /*hash(pk)*/
   Nonce nonce; /*one unique nonce per signature*/
 
+  // pk generation
+  void wots_pkgen();
 
+  // hash pk
+  void wots_pkhash();
+
+  // unique signature nonce
+  void gen_signonce();
 
 
 

@@ -8,7 +8,7 @@
 #endif
 
 namespace hsig {
-#if HBSS_SCHEME == WOTS
+//#if HBSS_SCHEME == WOTS
 #ifndef WOTS_LOG_SECRETS_DEPTH
 #error "Define WOTS_LOG_SECRETS_DEPTH"
 #endif

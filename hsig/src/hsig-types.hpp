@@ -2,9 +2,9 @@
 #define HSIG_HSIG_TYPES_HPP
 
 #include <array>
+#include <chrono>
+
 #include "config.hpp"
-
-
 
 namespace hsig {
 
@@ -28,6 +28,7 @@ namespace hsig {
   };
 
   using Seed = std::array<uint8_t, 32>; /*seed for sk generation*/
+  using Hash = std::array<uint8_t, 32>;
   using Nonce = std::array<uint8_t, 16>;
   using Secret = std::array<uint8_t, 18>; /*wotsplus sk_i*/
   using SecretHash = Secret;
