@@ -1,13 +1,14 @@
 shared : []
 extern : []
 third-party : []
-hsig: [crypto]
 
-#memstore : [shared, extern]
+
+memstore : [shared, extern]
 #
 #ctrl : [shared, extern, memory]
 #conn : [shared, ctrl, memstore, third-party]
-#crypto : [shared, memstore, third-party]
+crypto : [shared, memstore, third-party]
+hsig: [crypto]
 #special : [third-party, shared]
 #memory : [special, shared]
 #rpc : [shared]
