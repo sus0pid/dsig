@@ -10,11 +10,9 @@ string(TIMESTAMP BUILD_TIME "%Y-%m-%d %H:%M")
 add_definitions(-DBINARY_BUILD_TIME="${BUILD_TIME}")
 message(STATUS "Conan libraries: ${CONAN_LIBS}")
 
-# Add library
-add_library(hsig STATIC hsig.cpp)
 
 # Add executable
-add_executable(test-hsig ${HEADER_TIDER}  test/main.cpp)
+add_executable(test-hsig ${HEADER_TIDER}  test/main.cpp hsig.cpp)
 
 # Apply compile definitions to the executable
 target_compile_definitions(
@@ -25,6 +23,5 @@ target_compile_definitions(
 # Link the library to the executable
 target_link_libraries(
         test-hsig
-        PRIVATE hsig
         ${CONAN_LIBS}
 )
