@@ -3,12 +3,11 @@
 #ifndef HASHING_SCHEME
 #error "Define HASHING_SCHEME"
 #endif
+
 #ifndef WOTS_LOG_SECRETS_DEPTH
-#error "Define WOTS_LOG_SECRETS_DEPTH"
-#endif
-#else
 #define WOTS_LOG_SECRETS_DEPTH 2
 #endif
+
 
 namespace dory::hsig {
 
