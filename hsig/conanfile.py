@@ -26,7 +26,7 @@ class DoryHsigConan(ConanFile):
     def requirements(self):
         # Add dependencies here if required
         # self.requires("fmt/7.1.3")  # Example dependency
-        pass
+        self.requires("dory-crypto/0.0.1")
 
     def configure(self):
         pass

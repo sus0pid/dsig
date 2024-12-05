@@ -1,20 +1,95 @@
 #include <iostream>
 
+#include <dory/crypto/hash/blake3.hpp>
 #include "hsig.hpp"
+#include "hash-util.hpp"
 
-namespace hybrid_sig {
+namespace hsig {
 
-std::string HybridSignature::sign(const std::string &data) {
+Hsig::Hsig(HsigConfig const &config, int ServiceID)
+    : config(config),
+      seed(RandomGenerator().generate()),  // Use RandomGenerator to initialize the seed
+      pk_nonce{}, pk_hash{}, nonce{} {
+
+  std::cout << "Initializing Hsig with ServiceID: " << ServiceID << std::endl;
+
+  // Initialize the secrets to default values
+  for (auto &row : secrets) {
+    for (auto &secret : row) {
+      secret.fill(0);  // Set all secret values to 0 initially
+    }
+  }
+
+}
+
+Hsig::~Hsig() {
+  std::cout << "Destroying Hsig instance." << std::endl;
+}
+
+
+std::string Hsig::sign(const std::string &data) {
   // Dummy implementation
   std::cout << "Signing data: " << data << std::endl;
   return "signature_" + data;
 }
 
-bool HybridSignature::verify(const std::string &data, const std::string &signature) {
+bool Hsig::verify(const std::string &data, const std::string &signature) {
   // Dummy implementation
   std::cout << "Verifying data: " << data << " with signature: " << signature << std::endl;
   return signature == "signature_" + data;
 }
+
+/*generate pks from sks and store the intermediate results*/
+void Hsig::wots_pkgen() {
+  std::cout << "Wots key generation..." << std::endl;
+  pk_nonce = sk_nonce(seed);
+  secrets.front() = crypto::hash::blake3<SecretRow>(seed);
+  for (size_t i = 0; i + 1 < SecretsDepth; i++) {
+    if constexpr (HashingScheme == Haraka) {
+      // 4x speedup
+      auto const speedup_until = SecretsPerSecretKey - SecretsPerSecretKey % 4;
+      for (size_t j = 0; j < speedup_until; j += 4) {
+        auto& secret_hash_4x = *reinterpret_cast<SecretHash4x*>(&secrets[i + 1][j]);
+        auto& secret_4x = *reinterpret_cast<Secret4x*>(&secrets[i][j]);
+        secret_hash_4x = hash_secret_haraka_4x(secret_4x, pk_nonce, j, i);
+      }
+      for (size_t j = speedup_until; j < SecretsPerSecretKey; j++) {
+        secrets[i + 1][j] = hash_secret(secrets[i][j], pk_nonce, j, i);
+      }
+    } else {
+      for (size_t j = 0; j < SecretsPerSecretKey; j++) {
+        secrets[i + 1][j] = hash_secret(secrets[i][j], pk_nonce, j, i);
+      }
+    }
+  }
+}
+
+void Hsig::wots_pkhash() {
+  std::cout << "wots hashing pk..." << std::endl;
+
+  auto hasher = crypto::hash::blake3_init();
+  crypto::hash::blake3_update(hasher, pk_nonce);
+  if constexpr (HbssScheme == HorsMerkle) {
+    crypto::hash::blake3_update(hasher, hors_pk_tree->roots());
+  } else {
+    crypto::hash::blake3_update(hasher, secrets.back()); /*hash the pk*/
+  }
+  pk_hash = crypto::hash::blake3_final(hasher);
+}
+
+void Hsig::gen_signonce() {
+  std::cout << "wots signature nonce..." << std::endl;
+  nonce = sig_nonce(seed);
+}
+
+//void HybridSignature::start_background() {
+//  background.start_sender_background();
+//  background.start_receiver_background();
+//}
+//
+//void HybridSignature::stop_background() {
+//  background.stop();
+//}
 
 } // namespace hybrid_sig
 

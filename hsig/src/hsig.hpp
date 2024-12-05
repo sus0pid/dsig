@@ -3,17 +3,66 @@
 
 #include <string>
 
-namespace hybrid_sig {
+#include "hsig-types.hpp"
+#include "config.hpp"
 
-class HybridSignature {
+namespace hsig {
+
+class Hsig {
+  /*a row of chain([sk0-skl1+l2], i)*/
+  using SecretRow = std::array<Secret, SecretsPerSecretKey>;
+  /*secrets: 2d array that records intermediate results in sk-->pk*/
+  using Secrets = std::array<SecretRow, SecretsDepth>; /*secretdepth == w*/
+
  public:
-  HybridSignature() = default;
-  ~HybridSignature() = default;
+  Hsig(HsigConfig const &config, int ServiceID);
+  ~Hsig();
+
+  // As Hsig manages a thread, it should not be moved.
+//  Hsig(Hsig const &) = delete;
+//  Hsig &operator=(Hsig const &) = delete;
+//  Hsig(Hsig &&) = delete;
+//  Hsig &operator=(Hsig &&) = delete;
 
   // Simplified methods
   std::string sign(const std::string &data);
   bool verify(const std::string &data, const std::string &signature);
+
+
+  // pk generation
+  void wots_pkgen();
+
+  // hash pk
+  void wots_pkhash();
+
+  // unique signature nonce
+  void gen_signonce();
+
+
+//  Signature sign(const uint8_t *message, size_t message_len);
+//  bool verify(const uint8_t *message, size_t message_len, const Signature &sig);
+
+//  void start_background();
+//  void stop_background();
+
+ private:
+  HsigConfig config;
+  Secrets secrets; /*one sk(secrets.front()) + one pk(pk = secrets.back())*/
+  Seed seed;
+
+  Nonce pk_nonce; /*a nonce for pk generation*/
+  Hash pk_hash; /*hash(pk)*/
+  Nonce nonce; /*one unique nonce per signature*/
+
+
+
+
+
+//  Foreground foreground;
+//  Background background;
+
 };
+
 
 } // namespace hybrid_sig
 

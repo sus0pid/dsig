@@ -8,6 +8,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-packed")
 string(TIMESTAMP BUILD_TIME "%Y-%m-%d %H:%M")
 add_definitions(-DBINARY_BUILD_TIME="${BUILD_TIME}")
 
+target_compile_definitions(test-hsig PRIVATE HASHING_SCHEME=0 WOTS_LOG_SECRETS_DEPTH=2)
 add_library(hsig STATIC hsig.cpp)
 add_executable(test-hsig test/main.cpp)
 target_link_libraries(

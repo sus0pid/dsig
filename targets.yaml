@@ -1,7 +1,7 @@
 shared : []
 extern : []
 third-party : []
-hsig: []
+hsig: [crypto]
 
 #memstore : [shared, extern]
 #
