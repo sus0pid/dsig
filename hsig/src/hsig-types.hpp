@@ -18,13 +18,11 @@ namespace dory::hsig {
     size_t fetch_threshold;  // Receiver threshold for remaining PKs
     size_t fetch_batch_size;  // Number of PKs to fetch when threshold is reached
     std::chrono::milliseconds sender_interval;  // Interval for sender's key generation
-//    HashingScheme hash_func; /*wots hash function*/
-//    size_t wots_n;    /*hash output in bytes*/
-//    size_t wots_w;    /*wots params*/
-//    size_t wots_log_w;
-//    size_t wots_len1;
-//    size_t wots_len2;
-//    size_t wots_len;
+  };
+
+  struct Prefix {
+    Hash pk_hash;
+    Nonce nonce;
   };
 
   using Seed = std::array<uint8_t, 32>; /*seed for sk generation*/

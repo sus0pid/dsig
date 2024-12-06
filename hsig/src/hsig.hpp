@@ -55,6 +55,8 @@ class Hsig {
   // unique signature nonce
   void gen_signonce();
 
+  // calculate secret depth for given message
+  void wots_msg2depth(uint8_t const* const begin, uint8_t const* const end);
 
 
 //  Foreground foreground;
