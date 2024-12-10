@@ -1,10 +1,11 @@
-#ifndef HSIG_WOTS_TYPES_HPP
-#define HSIG_WOTS_TYPES_HPP
+#pragma once
+
 
 #include "hsig-types.hpp"
 #include "hsig-config.hpp"
-#include "inf-crypto/crypto.hpp"
-
+//#include "inf-crypto/crypto.hpp"
+#include "dilithium.hpp"
+#include "eddsa.hpp"
 
 namespace dory::hsig{
 
@@ -13,6 +14,7 @@ using Nonce = std::array<uint8_t, 16>;
 using Secret = std::array<uint8_t, 18>; /*wotsplus sk_i*/
 using SecretHash = Secret;
 
+using InfCrypto = DilithiumCrypto; // EddsaCrypto;
 using InfSignature = typename InfCrypto::Signature;
 using BatchedInfSignature = typename InfCrypto::BatchedSignature;
 
@@ -49,4 +51,3 @@ struct __attribute__((__packed__)) WotsSignature {
 }
 
 
-#endif  // HSIG_WOTS_TYPES_HPP
