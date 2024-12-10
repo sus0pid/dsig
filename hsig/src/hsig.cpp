@@ -10,7 +10,7 @@ namespace dory::hsig {
 Hsig::Hsig(HsigConfig const &config, int service_id)
     : config(config),
       seed(RandomGenerator().generate()),  // Use RandomGenerator to initialize the seed
-      pk_nonce{}, pk_hash{}, nonce{} {
+      pk_nonce{}, pk_hash{}, nonce{}, secret_depths{} {
 
   std::cout << "Initializing Hsig with ServiceID: " << service_id << std::endl;
   service_id = service_id;
@@ -29,6 +29,18 @@ std::string Hsig::sign(const std::string &data) {
   // Dummy implementation
   std::cout << "Signing data: " << data << std::endl;
   return "signature_" + data;
+}
+
+WotsSignature Hsig::wots_sign(uint8_t const* msg, size_t const msg_len) {
+  /*Initialize the wots signature*/
+  WotsSignature sig{pk_nonce, pk_sig.value(), nonce};
+  /*compute the secret depths of the given message*/
+  wots_msg2depth(pk_hash, nonce, msg, msg + msg_len);
+  for (size_t i = 0; i < SecretsPerSignature; i++) {
+    auto const secret_depth = msg_secret_depths[i];
+    std::memcpy(sig.secrets[i].data(), secrets[secret_depth][i].data(), sig.secrets[i].size());
+  }
+  return sig;
 }
 
 bool Hsig::verify(const std::string &data, const std::string &signature) {
@@ -85,8 +97,8 @@ void Hsig::wots_msg2depth(uint8_t const* const begin,
                             uint8_t const* const end) {
   // Deviation from the original WOTS: we compute a larger hash
   // and use a subset of the bits aligned on bytes.
-  static_assert(wots::LogSecretsDepth <= 8);
-  std::array<uint8_t, wots::L1> hash;
+  static_assert(LogSecretsDepth <= 8);
+  std::array<uint8_t, L1> hash;
   std::array<uint8_t, 8> checksum = {};  // 8 is more than necessary
 
   // Computing the secret depths for L1
@@ -96,25 +108,27 @@ void Hsig::wots_msg2depth(uint8_t const* const begin,
   crypto::hash::blake3_update(hasher, begin, end);
   crypto::hash::blake3_final_there(hasher, hash.data(), hash.size());
   uint64_t& csum = *reinterpret_cast<uint64_t*>(checksum.data());
-  for (size_t secret = 0; secret < wots::L1; secret++) {
+  for (size_t secret = 0; secret < L1; secret++) {
     static uint8_t constexpr SecretsDepthMask = SecretsDepth - 1;
-    secret_depths[secret] = hash[secret] & SecretsDepthMask;
-    csum += secret_depths[secret];
+    msg_secret_depths[secret] = hash[secret] & SecretsDepthMask;
+    csum += msg_secret_depths[secret];
   }
 
   // Computing the secret depths for L2
-  for (size_t secret = wots::L1, bit_offset = 0;
-       secret < wots::SecretsPerSecretKey;
-       secret++, bit_offset += wots::LogSecretsDepth) {
+  for (size_t secret = L1, bit_offset = 0;
+       secret < SecretsPerSecretKey;
+       secret++, bit_offset += LogSecretsDepth) {
     static uint16_t constexpr SecretsDepthMask = SecretsDepth - 1;
     auto const byte_offset = bit_offset / 8ul;
     auto const remaining_bit_offset = bit_offset % 8ul;
     // Due to Intel's little endianness, the initialized bytes hold the LSBs.
     // Given that C++'s shift operator work on the value and not on the memory
     // representation, we need to read the LSB
-    secret_depths[secret] = (*reinterpret_cast<uint16_t const*>(&checksum[byte_offset]) >>
+    msg_secret_depths[secret] = (*reinterpret_cast<uint16_t const*>(&checksum[byte_offset]) >>
                              remaining_bit_offset) & SecretsDepthMask;
   }
+}
+
 }
 
 //void HybridSignature::start_background() {

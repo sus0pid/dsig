@@ -27,6 +27,7 @@ class Hsig {
   // Simplified methods
   std::string sign(const std::string &data);
   bool verify(const std::string &data, const std::string &signature);
+  WotsSignature wots_sign(uint8_t const* msg, size_t const msg_len);
 
 
 
@@ -45,6 +46,8 @@ class Hsig {
   Nonce pk_nonce; /*a nonce for pk generation*/
   Hash pk_hash; /*hash(pk)*/
   Nonce nonce; /*one unique nonce per signature*/
+
+  std::array<uint8_t, SecretsPerSignature> msg_secret_depths;
 
   // pk generation
   void wots_pkgen();

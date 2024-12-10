@@ -26,5 +26,9 @@ size_t constexpr L2 = PrecomputedL2[LogSecretsDepth];
 size_t constexpr SecretsPerSecretKey = L1 + L2; /*L*/
 size_t constexpr SecretsPerSignature = SecretsPerSecretKey; /*L*/
 
-
+// There should be at least 2 levels.
+static_assert(SecretsDepth > 1);
+size_t constexpr LogInfBatchSize = LOG_INF_BATCH_SIZE;
+size_t constexpr InfBatchSize = 1 << LogInfBatchSize;
+size_t constexpr PreparedSks = std::max(InfBatchSize, 512ul);
 }
