@@ -2,6 +2,7 @@
 
 #include <array>
 
+
 #ifndef HASHING_SCHEME
 #error "Define HASHING_SCHEME"
 #endif
@@ -15,6 +16,12 @@
 #endif
 
 namespace dory::hsig {
+
+char constexpr nspace[] = "dsig-";
+
+enum HashingSchemes { Blake3 = 0, SipHash = 1, Haraka = 2, SHA256 = 3 };
+HashingSchemes constexpr HashingScheme = static_cast<HashingSchemes>(HASHING_SCHEME);
+static_assert(HashingScheme == Blake3 || HashingScheme == SipHash || HashingScheme == Haraka || HashingScheme == SHA256);
 
 size_t constexpr LogSecretsDepth = WOTS_LOG_SECRETS_DEPTH; /*log_w*/
 size_t constexpr SecretsDepth = 1 << LogSecretsDepth; /*w*/
@@ -36,6 +43,8 @@ static_assert(SecretsDepth > 1);
 size_t constexpr LogInfBatchSize = LOG_INF_BATCH_SIZE;
 size_t constexpr InfBatchSize = 1 << LogInfBatchSize;
 size_t constexpr PreparedSks = std::max(InfBatchSize, 512ul);
+
+size_t constexpr CachedPkBatchesPerProcess = 8 * PreparedSks / InfBatchSize;
 
 ///*copy from dsig/src/export/config.hpp*/
 //std::array<size_t, 65> constexpr PrecomputedLogNbRoots = {
