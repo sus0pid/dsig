@@ -2,6 +2,8 @@
 #define HSIG_HPP
 
 #include <string>
+#include <array>
+#include <optional>
 
 #include "inf-crypto/crypto.hpp"
 #include "hsig-config.hpp"
