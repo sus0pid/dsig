@@ -28,7 +28,7 @@ int main() {
   dory::hsig::WotsSignature w_sig = hsig.wots_sign(msg, msg_len);
   for (size_t i = 0; i < dory::hsig::SecretsPerSignature; i++) {
     std::cout << "Secret " << i << ": ";
-    for (auto byte : signature.secrets[i]) {
+    for (auto byte : w_sig.secrets[i]) {
       std::cout << std::hex << static_cast<int>(byte) << " ";
     }
     std::cout << std::endl;
