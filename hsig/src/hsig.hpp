@@ -4,7 +4,7 @@
 #include <string>
 
 #include "hsig-config.hpp"
-#include "hsig-types.hpp"
+#include "wots-types.hpp"
 
 namespace dory::hsig {
 

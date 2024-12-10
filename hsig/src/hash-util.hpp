@@ -15,7 +15,7 @@
 #include <dory/crypto/hash/siphash.hpp>
 #include <dory/crypto/hash/haraka.hpp>
 
-#include "hsig-types.hpp"
+#include "wots-types.hpp"
 
 namespace dory::hsig {
 template <typename Duration>
