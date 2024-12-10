@@ -13,6 +13,7 @@
 #include <dory/shared/logger.hpp>
 
 #include "batch.hpp"
+#include "hsig-types.hpp"
 
 // Use Dalek or Sodium
 #include <dory/crypto/asymmetric/dalek.hpp>

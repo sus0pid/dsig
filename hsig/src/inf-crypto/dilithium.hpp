@@ -15,6 +15,7 @@
 #include <dory/crypto/asymmetric/dilithium.hpp>
 
 #include "batch.hpp"
+#include "hsig-types.hpp"
 
 namespace dory::hsig {
 class DilithiumCrypto {

@@ -26,6 +26,7 @@ namespace dory::hsig {
     Nonce nonce;
   };
 
+  using ProcId = int;
   using Seed = std::array<uint8_t, 32>; /*seed for sk generation*/
   using Hash = std::array<uint8_t, 32>;
   using Nonce = std::array<uint8_t, 16>;
