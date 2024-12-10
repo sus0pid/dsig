@@ -3,8 +3,8 @@
 
 #include <string>
 
+#include "hsig-config.hpp"
 #include "hsig-types.hpp"
-#include "config.hpp"
 
 namespace dory::hsig {
 

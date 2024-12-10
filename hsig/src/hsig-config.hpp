@@ -31,4 +31,11 @@ static_assert(SecretsDepth > 1);
 size_t constexpr LogInfBatchSize = LOG_INF_BATCH_SIZE;
 size_t constexpr InfBatchSize = 1 << LogInfBatchSize;
 size_t constexpr PreparedSks = std::max(InfBatchSize, 512ul);
+
+/*copy from dsig/src/export/config.hpp*/
+size_t constexpr LogSecretsPerSecretKey = PrecomputedLogSecretsPerSecretKey[SecretsPerSignature];
+static_assert(LogSecretsPerSecretKey != 0);
+size_t constexpr SecretsPerSecretKey = 1 << LogSecretsPerSecretKey;
+size_t constexpr LogNbRoots = PrecomputedLogNbRoots[SecretsPerSignature];
+size_t constexpr NbRoots = 1 << LogNbRoots;
 }

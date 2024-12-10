@@ -8,9 +8,9 @@
 #include <dory/crypto/hash/blake3.hpp>
 #include <dory/shared/branching.hpp>
 
-#include "export/config.hpp"
+#include "hsig-config.hpp"
 
-namespace dory::dsig {
+namespace dory::hsig {
 
 template <size_t _LogNbLeaves, size_t _LogNbRoots = 0>
 struct MerkleTree {

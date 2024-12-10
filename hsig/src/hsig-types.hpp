@@ -4,7 +4,7 @@
 #include <array>
 #include <chrono>
 
-#include "config.hpp"
+#include "hsig-config.hpp"
 #include "inf-crypto/crypto.hpp"
 
 namespace dory::hsig {
