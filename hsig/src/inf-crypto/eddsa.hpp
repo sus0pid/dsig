@@ -14,6 +14,7 @@
 
 #include "batch.hpp"
 #include "../hsig-types.hpp"
+#include "../hsig-config.hpp"
 
 // Use Dalek or Sodium
 #include <dory/crypto/asymmetric/dalek.hpp>

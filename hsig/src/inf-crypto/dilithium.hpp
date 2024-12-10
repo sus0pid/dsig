@@ -16,6 +16,7 @@
 
 #include "batch.hpp"
 #include "../hsig-types.hpp"
+#include "../hsig-config.hpp"
 
 namespace dory::hsig {
 class DilithiumCrypto {
