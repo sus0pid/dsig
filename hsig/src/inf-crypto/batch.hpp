@@ -2,7 +2,7 @@
 
 #include <array>
 
-#include "../wots-types.hpp"
+#include "../hsig-types.hpp"
 #include "../merkle.hpp"
 
 
