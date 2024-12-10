@@ -4,8 +4,8 @@
 #include "hsig-types.hpp"
 #include "hsig-config.hpp"
 //#include "inf-crypto/crypto.hpp"
-#include "dilithium.hpp"
-#include "eddsa.hpp"
+#include "inf-crypto/dilithium.hpp"
+#include "inf-crypto/eddsa.hpp"
 
 namespace dory::hsig{
 
