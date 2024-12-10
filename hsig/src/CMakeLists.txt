@@ -10,6 +10,9 @@ string(TIMESTAMP BUILD_TIME "%Y-%m-%d %H:%M")
 add_definitions(-DBINARY_BUILD_TIME="${BUILD_TIME}")
 message(STATUS "Conan libraries: ${CONAN_LIBS}")
 
+set(HASHING_SCHEME 0)
+set(LOG_INF_BATCH_SIZE 7)
+set(WOTS_LOG_SECRETS_DEPTH 2)
 
 # Add executable
 add_executable(test-hsig ${HEADER_TIDER}  test/main.cpp hsig.cpp)
@@ -17,8 +20,9 @@ add_executable(test-hsig ${HEADER_TIDER}  test/main.cpp hsig.cpp)
 # Apply compile definitions to the executable
 target_compile_definitions(
         test-hsig
-        PUBLIC HASHING_SCHEME=0
-        WOTS_LOG_SECRETS_DEPTH=2)
+        PUBLIC HASHING_SCHEME=${HASHING_SCHEME}
+        WOTS_LOG_SECRETS_DEPTH=${WOTS_LOG_SECRETS_DEPTH}
+        LOG_INF_BATCH_SIZE=${LOG_INF_BATCH_SIZE})
 
 # Link the library to the executable
 target_link_libraries(
