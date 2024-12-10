@@ -37,12 +37,20 @@ size_t constexpr LogInfBatchSize = LOG_INF_BATCH_SIZE;
 size_t constexpr InfBatchSize = 1 << LogInfBatchSize;
 size_t constexpr PreparedSks = std::max(InfBatchSize, 512ul);
 
-/*copy from dsig/src/export/config.hpp*/
-size_t constexpr LogSecretsPerSecretKey = PrecomputedLogSecretsPerSecretKey[SecretsPerSignature];
-static_assert(LogSecretsPerSecretKey != 0);
-size_t constexpr SecretsPerSecretKey = 1 << LogSecretsPerSecretKey;
-size_t constexpr LogNbRoots = PrecomputedLogNbRoots[SecretsPerSignature];
-size_t constexpr NbRoots = 1 << LogNbRoots;
+///*copy from dsig/src/export/config.hpp*/
+//std::array<size_t, 65> constexpr PrecomputedLogNbRoots = {
+//    0,
+//    0,  0,  0,  0,  0,  0,  0,  3,
+//    4,  4,  4,  4,  4,  4,  0,  4,
+//    0,  0,  5,  0,  0,  0,  0,  5,
+//    0,  0,  0,  0,  0,  0,  0,  5,
+//    0,  0,  0,  0,  0,  0,  0,  0,
+//    0,  0,  0,  0,  0,  0,  0,  0,
+//    0,  0,  0,  0,  0,  0,  0,  0,
+//    0,  0,  0,  0,  0,  0,  0,  6,
+//};
+//size_t constexpr LogNbRoots = PrecomputedLogNbRoots[SecretsPerSignature];
+//size_t constexpr NbRoots = 1 << LogNbRoots;
 }
 
 #undef HASHING_SCHEME
