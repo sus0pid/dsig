@@ -26,10 +26,10 @@ int main() {
 
   uint8_t const* msg = reinterpret_cast<const uint8_t*>(data.data());
   size_t msg_len = data.size();
-  WotsSignature w_sig = hsig.wots_sign(msg, msg_len);
-  for (size_t i = 0; i < SecretsPerSignature; i++) {
+  dory::hsig::WotsSignature w_sig = hsig.wots_sign(msg, msg_len);
+  for (size_t i = 0; i < dory::hsig::SecretsPerSignature; i++) {
     std::cout << "Secret " << i << ": ";
-    for (auto byte : signature.sig[i]) {
+    for (auto byte : signature.secrets[i]) {
       std::cout << std::hex << static_cast<int>(byte) << " ";
     }
     std::cout << std::endl;
