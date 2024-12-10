@@ -2,7 +2,9 @@
 
 #include <array>
 
+#include "../wots-types.hpp"
 #include "../merkle.hpp"
+
 
 namespace dory::hsig {
 
