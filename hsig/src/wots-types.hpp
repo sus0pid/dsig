@@ -8,10 +8,6 @@
 
 namespace dory::hsig{
 
-enum HashingSchemes { Blake3 = 0, SipHash = 1, Haraka = 2, SHA256 = 3 };
-HashingSchemes constexpr HashingScheme = static_cast<HashingSchemes>(HASHING_SCHEME);
-static_assert(HashingScheme == Blake3 || HashingScheme == SipHash || HashingScheme == Haraka || HashingScheme == SHA256);
-
 using Seed = std::array<uint8_t, 32>; /*seed for sk generation*/
 using Nonce = std::array<uint8_t, 16>;
 using Secret = std::array<uint8_t, 18>; /*wotsplus sk_i*/
