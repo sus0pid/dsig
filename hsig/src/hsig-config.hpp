@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+
 #ifndef HASHING_SCHEME
 #error "Define HASHING_SCHEME"
 #endif
@@ -8,6 +10,9 @@
 #define WOTS_LOG_SECRETS_DEPTH 2
 #endif
 
+#ifndef LOG_INF_BATCH_SIZE
+#error "Define LOG_INF_BATCH_SIZE"
+#endif
 
 namespace dory::hsig {
 
@@ -39,3 +44,7 @@ size_t constexpr SecretsPerSecretKey = 1 << LogSecretsPerSecretKey;
 size_t constexpr LogNbRoots = PrecomputedLogNbRoots[SecretsPerSignature];
 size_t constexpr NbRoots = 1 << LogNbRoots;
 }
+
+#undef HASHING_SCHEME
+#undef LOG_INF_BATCH_SIZE
+#undef WOTS_LOG_SECRETS_DEPTH
