@@ -2,6 +2,7 @@
 #include <chrono>
 #include <string>
 #include "../hsig.hpp"
+#include "../wots-types.hpp"
 
 int main() {
 
@@ -21,6 +22,17 @@ int main() {
     std::cout << "Verification succeeded!" << std::endl;
   } else {
     std::cout << "Verification failed!" << std::endl;
+  }
+
+  uint8_t const* msg = reinterpret_cast<const uint8_t*>(data.data());
+  size_t msg_len = data.size();
+  WotsSignature w_sig = hsig.wots_sign(msg, msg_len);
+  for (size_t i = 0; i < SecretsPerSignature; i++) {
+    std::cout << "Secret " << i << ": ";
+    for (auto byte : signature.sig[i]) {
+      std::cout << std::hex << static_cast<int>(byte) << " ";
+    }
+    std::cout << std::endl;
   }
 
   return 0;
