@@ -49,6 +49,9 @@ class DoryHsigConan(ConanFile):
         ].module.lto_decision(cmake, self.options.lto)
         cmake.definitions["DORY_LTO"] = str(lto_decision).upper()
 
+        cmake.definitions["SPDLOG_ACTIVE_LEVEL"] = "SPDLOG_LEVEL_{}".format(
+            self.options.log_level
+        )
         cmake.configure(source_folder="src")
         cmake.build()
 
