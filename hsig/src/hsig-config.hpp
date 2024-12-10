@@ -2,6 +2,14 @@
 
 #include <array>
 
+// Non-standard directive, but both gcc and clang provide it
+#if defined __has_include
+#if __has_include("internal/compile-time-config.hpp")
+#include "internal/compile-time-config.hpp"
+#endif
+#else
+#warning "Cannot export as a shared library"
+#endif
 
 #ifndef HASHING_SCHEME
 #error "Define HASHING_SCHEME"
@@ -62,6 +70,10 @@ size_t constexpr CachedPkBatchesPerProcess = 8 * PreparedSks / InfBatchSize;
 //size_t constexpr NbRoots = 1 << LogNbRoots;
 }
 
+#if defined __has_include
+#if __has_include("internal/compile-time-config.hpp")
 #undef HASHING_SCHEME
 #undef LOG_INF_BATCH_SIZE
 #undef WOTS_LOG_SECRETS_DEPTH
+#endif
+#endif
