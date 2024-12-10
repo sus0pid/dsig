@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include "inf-crypto/crypto.hpp"
 #include "hsig-config.hpp"
 #include "wots-types.hpp"
 
@@ -29,6 +30,10 @@ class Hsig {
   bool verify(const std::string &data, const std::string &signature);
   WotsSignature wots_sign(uint8_t const* msg, size_t const msg_len);
 
+//  std::optional<BatchedInfSignature> pk_sig;
+  std::optional<InfSignature> pk_sig;
+
+
 
 
 //  Signature sign(const uint8_t *message, size_t message_len);
@@ -49,8 +54,13 @@ class Hsig {
 
   std::array<uint8_t, SecretsPerSignature> msg_secret_depths;
 
-  // pk generation
+  InfCrypto& inf_crypto; /*dilithium (signature algo that used to sign the public key*/
+
+  // one pair of pk-sk generation
   void wots_pkgen();
+
+  // sign the ots pk with dilithium or eddsa or other algo
+  void pk_infsign();
 
   // hash pk
   void wots_pkhash();

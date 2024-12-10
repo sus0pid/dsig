@@ -10,13 +10,14 @@ namespace dory::hsig {
 Hsig::Hsig(HsigConfig const &config, int service_id)
     : config(config),
       seed(RandomGenerator().generate()),  // Use RandomGenerator to initialize the seed
-      pk_nonce{}, pk_hash{}, nonce{}, secret_depths{} {
+      pk_nonce{}, pk_hash{}, nonce{}, secrets{}, pk_sig{}, inf_crypto{} {
 
   std::cout << "Initializing Hsig with ServiceID: " << service_id << std::endl;
   service_id = service_id;
   wots_pkgen();
   wots_pkhash();
   gen_signonce();
+  pk_infsign();
 
 }
 
@@ -35,7 +36,7 @@ WotsSignature Hsig::wots_sign(uint8_t const* msg, size_t const msg_len) {
   /*Initialize the wots signature*/
   WotsSignature sig{pk_nonce, pk_sig.value(), nonce};
   /*compute the secret depths of the given message*/
-  wots_msg2depth(pk_hash, nonce, msg, msg + msg_len);
+  wots_msg2depth(msg, msg + msg_len);
   for (size_t i = 0; i < SecretsPerSignature; i++) {
     auto const secret_depth = msg_secret_depths[i];
     std::memcpy(sig.secrets[i].data(), secrets[secret_depth][i].data(), sig.secrets[i].size());
@@ -72,6 +73,23 @@ void Hsig::wots_pkgen() {
       }
     }
   }
+}
+
+
+///*eddsa sign the merkle tree root*/
+//void sign(InfCrypto& inf_crypto) {
+//  for (size_t i = 0; i < Size; i++)
+//    to_send.pk_hashes[i] = sks[i]->getPkHash();
+//  tree.emplace(to_send.pk_hashes);
+//  to_send.root_sig = inf_crypto.sign(reinterpret_cast<uint8_t const*>(tree->root().data()), tree->root().size());
+//  for (size_t i = 0; i < Size; i++)
+//    sks[i]->pk_sig.emplace(to_send.pk_hashes[i], tree.value(), i, to_send.root_sig);
+//  state = Computed;
+//}
+
+/*dilithium signs the pk_hash*/
+void Hsig::pk_infsign() {
+  pk_sig = inf_crypto.sign(reinterpret_cast<uint8_t const*>(pk_hash.data()), pk_hash.size());
 }
 
 void Hsig::wots_pkhash() {
