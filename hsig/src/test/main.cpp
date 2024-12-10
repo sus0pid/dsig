@@ -2,7 +2,6 @@
 #include <chrono>
 #include <string>
 #include "../hsig.hpp"
-#include "../wots-types.hpp"
 
 int main() {
 
