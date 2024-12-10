@@ -22,7 +22,7 @@ struct Prefix {
 };
 
 /*common fileds of signature*/
-/*remove batch BatchedInfSignature pk_sig;*/
+/*remove batch BatchedInfSignature pk_sig; xs-10-dec*/
 #define ExtendBase(Signature) \
   Nonce pk_nonce; \
   InfSignature pk_sig; \
@@ -42,7 +42,7 @@ struct Prefix {
 struct __attribute__((__packed__)) WotsSignature {
   static constexpr std::string_view Scheme{"WOTS+"};
   ExtendBase(WotsSignature);
-  std::array<Secret, SecretsPerSignature> sig;
+  std::array<Secret, SecretsPerSignature> secrets; /*the value of signature*/
 };
 
 
