@@ -5,9 +5,8 @@
 #include <array>
 #include <optional>
 
-#include "inf-crypto/crypto.hpp"
-#include "hsig-config.hpp"
 #include "wots-types.hpp"
+//#include "inf-crypto/crypto.hpp"
 
 namespace dory::hsig {
 
