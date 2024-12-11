@@ -10,11 +10,14 @@ int main() {
   config.fetch_threshold = 10; // Receiver PK threshold
   config.fetch_batch_size = 20; // Number of PKs to fetch
   config.sender_interval = std::chrono::milliseconds(100); // 100ms interval
-  int service_id = 42;
-  dory::hsig::InfCrypto crypto; // dilithium crypto
+
+  // Example arguments for DilithiumCrypto
+  dory::hsig::ProcId local_id = 1; // Example local process ID
+  std::vector<dory::hsig::ProcId> all_ids = {1, 2, 3}; // Example list of process IDs
+  dory::hsig::InfCrypto crypto(local_id, all_ids); // dilithium crypto
 
 
-  dory::hsig::Hsig hsig(config, service_id, crypto);
+  dory::hsig::Hsig hsig(config, local_id, crypto);
 
   std::string data = "Test message";
   std::string signature = hsig.sign(data);

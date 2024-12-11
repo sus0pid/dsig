@@ -7,8 +7,8 @@
 
 namespace dory::hsig {
 
-Hsig::Hsig(HsigConfig const &config, int service_id, InfCrypto& crypto)
-    : service_id(service_id),  // Corrected order
+Hsig::Hsig(HsigConfig const &config, ProcId local_id, InfCrypto& crypto)
+    : local_id(local_id),  // Corrected order
       config(config),
       secrets{},
       seed(RandomGenerator().generate()),

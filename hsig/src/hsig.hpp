@@ -17,7 +17,7 @@ class Hsig {
   using Secrets = std::array<SecretRow, SecretsDepth>; /*secretdepth == w*/
 
  public:
-  Hsig(HsigConfig const &config, int service_id, InfCrypto& crypto);
+  Hsig(HsigConfig const &config, ProcId local_id, InfCrypto& crypto);
   ~Hsig();
 
   // As Hsig manages a thread, it should not be moved.
@@ -44,7 +44,7 @@ class Hsig {
 //  void stop_background();
 
  private:
-  int service_id;
+  ProcId local_id;
   HsigConfig config;
   Secrets secrets; /*one sk(secrets.front()) + one pk(pk = secrets.back())*/
   Seed seed;
