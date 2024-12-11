@@ -5,6 +5,6 @@
 
 namespace dory::hsig {
 
-using InfCrypto = DilithiumCrypto; // EddsaCrypto;
+using InfCrypto = EddsaCrypto; // EddsaCrypto;
 
 }

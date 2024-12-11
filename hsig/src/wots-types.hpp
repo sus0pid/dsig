@@ -14,7 +14,7 @@ using Nonce = std::array<uint8_t, 16>;
 using Secret = std::array<uint8_t, 18>; /*wotsplus sk_i*/
 using SecretHash = Secret;
 
-using InfCrypto = DilithiumCrypto; // EddsaCrypto;
+using InfCrypto = EddsaCrypto; // DilithiumCrypto;
 using InfSignature = typename InfCrypto::Signature;
 using BatchedInfSignature = typename InfCrypto::BatchedSignature;
 
