@@ -17,7 +17,7 @@ class Hsig {
   using Secrets = std::array<SecretRow, SecretsDepth>; /*secretdepth == w*/
 
  public:
-  Hsig(HsigConfig const &config, int service_id);
+  Hsig(HsigConfig const &config, int service_id, InfCrypto& crypto);
   ~Hsig();
 
   // As Hsig manages a thread, it should not be moved.

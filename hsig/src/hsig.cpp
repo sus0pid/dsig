@@ -7,19 +7,25 @@
 
 namespace dory::hsig {
 
-Hsig::Hsig(HsigConfig const &config, int service_id)
-    : config(config),
-      seed(RandomGenerator().generate()),  // Use RandomGenerator to initialize the seed
-      pk_nonce{}, pk_hash{}, nonce{}, secrets{}, pk_sig{}, inf_crypto{} {
+Hsig::Hsig(HsigConfig const &config, int service_id, InfCrypto& crypto)
+    : service_id(service_id),  // Corrected order
+      config(config),
+      secrets{},
+      seed(RandomGenerator().generate()),
+      pk_nonce{},
+      pk_hash{},
+      nonce{},
+      pk_sig{},
+      inf_crypto{crypto} {
 
   std::cout << "Initializing Hsig with ServiceID: " << service_id << std::endl;
-  service_id = service_id;
   wots_pkgen();
   wots_pkhash();
   gen_signonce();
   pk_infsign();
 
 }
+
 
 Hsig::~Hsig() {
   std::cout << "Destroying Hsig instance." << std::endl;
@@ -147,7 +153,6 @@ void Hsig::wots_msg2depth(uint8_t const* const begin,
   }
 }
 
-}
 
 //void HybridSignature::start_background() {
 //  background.start_sender_background();
