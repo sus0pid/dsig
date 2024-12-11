@@ -18,7 +18,7 @@ Hsig::Hsig(HsigConfig const &config, ProcId local_id, InfCrypto& crypto)
       pk_sig{},
       inf_crypto{crypto} {
 
-  std::cout << "Initializing Hsig with ServiceID: " << service_id << std::endl;
+  std::cout << "Initializing Hsig with ServiceID: " << local_id << std::endl;
   wots_pkgen();
   wots_pkhash();
   gen_signonce();
