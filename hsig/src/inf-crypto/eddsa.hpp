@@ -30,7 +30,7 @@ class EddsaCrypto {
   using BatchedSignature = Batched<Signature>;
 
   EddsaCrypto(ProcId local_id, std::vector<ProcId> const &all_ids)
-      : my_id{local_id}, store{nspace}, LOGGER_INIT(logger, "Dsig") {
+      : my_id{local_id}, store{nspace}, LOGGER_INIT(logger, "Hsig") {
     crypto_impl::init();
 
     LOGGER_INFO(logger, "Publishing my EdDSA key (process {})", my_id);

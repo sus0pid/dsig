@@ -25,7 +25,7 @@ class DilithiumCrypto {
   using BatchedSignature = Batched<Signature>;
 
   DilithiumCrypto(ProcId local_id, std::vector<ProcId> const &all_ids)
-      : my_id{local_id}, store{nspace}, LOGGER_INIT(logger, "Dsig") {
+      : my_id{local_id}, store{nspace}, LOGGER_INIT(logger, "Hsig") {
     crypto::asymmetric::dilithium::init();
 
     LOGGER_INFO(logger, "Publishing my Dilithium key (process {})", my_id);
