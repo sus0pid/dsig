@@ -16,7 +16,6 @@ int main() {
   std::vector<dory::hsig::ProcId> all_ids = {1, 2, 3}; // Example list of process IDs
   dory::hsig::InfCrypto crypto(local_id, all_ids); // dilithium crypto
 
-
   dory::hsig::Hsig hsig(config, local_id, crypto);
 
   std::string data = "Test message";
