@@ -11,8 +11,10 @@ int main() {
   config.fetch_batch_size = 20; // Number of PKs to fetch
   config.sender_interval = std::chrono::milliseconds(100); // 100ms interval
   int service_id = 42;
+  dory::hsig::InfCrypto crypto; // dilithium crypto
 
-  dory::hsig::Hsig hsig(config, service_id);
+
+  dory::hsig::Hsig hsig(config, service_id, crypto);
 
   std::string data = "Test message";
   std::string signature = hsig.sign(data);
