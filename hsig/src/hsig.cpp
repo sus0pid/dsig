@@ -15,6 +15,7 @@ Hsig::Hsig(HsigConfig const &config, ProcId local_id, InfCrypto& crypto)
       pk_nonce{},
       pk_hash{},
       nonce{},
+      msg_secret_depths{},
       pk_sig{},
       inf_crypto{crypto} {
 

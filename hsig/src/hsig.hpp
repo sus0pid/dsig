@@ -31,9 +31,6 @@ class Hsig {
   bool verify(const std::string &data, const std::string &signature);
   WotsSignature wots_sign(uint8_t const* msg, size_t const msg_len);
 
-//  std::optional<BatchedInfSignature> pk_sig;
-  std::optional<InfSignature> pk_sig;
-
 
 
 
@@ -54,6 +51,9 @@ class Hsig {
   Nonce nonce; /*one unique nonce per signature*/
 
   std::array<uint8_t, SecretsPerSignature> msg_secret_depths;
+
+  //  std::optional<BatchedInfSignature> pk_sig;
+  std::optional<InfSignature> pk_sig;
 
   InfCrypto& inf_crypto; /*dilithium (signature algo that used to sign the public key*/
 
