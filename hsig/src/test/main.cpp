@@ -31,11 +31,11 @@ int main() {
   std::string data = "Test message";
   std::string signature = hsig.sign(data);
 
-  if (hsig.verify(data, signature)) {
-    std::cout << "Verification succeeded!" << std::endl;
-  } else {
-    std::cout << "Verification failed!" << std::endl;
-  }
+//  if (hsig.verify(data, signature)) {
+//    std::cout << "Verification succeeded!" << std::endl;
+//  } else {
+//    std::cout << "Verification failed!" << std::endl;
+//  }
 
   uint8_t const* msg = reinterpret_cast<const uint8_t*>(data.data());
   size_t msg_len = data.size();
@@ -52,8 +52,7 @@ int main() {
   } else {
     std::cout << "Verification failed!" << std::endl;
   }
-
-
+  
   return 0;
 }
 

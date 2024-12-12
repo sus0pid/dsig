@@ -48,6 +48,28 @@ WotsSignature Hsig::wots_sign(uint8_t const* msg, size_t const msg_len) {
     auto const secret_depth = msg_secret_depths[i];
     std::memcpy(sig.secrets[i].data(), secrets[secret_depth][i].data(), sig.secrets[i].size());
   }
+
+  /*print out signature config data*/
+  fmt::print(">>>Signature data output:\n");
+  fmt::print("L1: {}, L2: {}, SecretsPerSig(L1+L2): {}, SecretsPerSecretKey(L1+L2): {}\n",
+             L1, L2, SecretsPerSignature, SecretsPerSecretKey);
+  fmt::print("W: {}, Log_w: {}, n: 256\n", SecretsDepth, LogSecretsDepth);
+  /*print out msg_secret_depths*/
+  for (size_t i = 0; i < SecretsPerSecretKey; i++) {
+    fmt::print("msg_secret_depths-{}: {}\n", i, static_cast<int>(msg_secret_depths[i]));
+    fmt::print("sig.secrets-{}: {}\n", i, static_cast<int>(sig.secrets[i]));
+  }
+
+  fmt::print("pk_nonce:\n");
+  for (const auto& n : pk_nonce) {
+    fmt::print("{} ", static_cast<int>(n));
+  }
+
+  fmt::print("nonce:\n");
+  for (const auto& n : nonce) {
+    fmt::print("{} ", static_cast<int>(n));
+  }
+
   return sig;
 }
 
@@ -61,12 +83,24 @@ bool Hsig::wots_verify(WotsSignature const& sig, uint8_t const* const begin,
   auto msg_secret_depths = wots_msg2depth(pk_hash, sig.nonce, begin, end);
 
   for (size_t secret = 0; secret < SecretsPerSignature; secret++) {
-     fmt::print("Secret {} has depth {}: {}\n", secret, msg_secret_depths[secret], sig_hashes[secret]);
+//     fmt::print("Secret {} has depth {}: {}\n", secret, msg_secret_depths[secret], sig_hashes[secret]);
     for (size_t d = msg_secret_depths[secret]; d + 1 < SecretsDepth; d++) {
-      fmt::print("Hashing secret {} (l={}), {} -> {}\n", secret, d, sig_hashes[secret], hash_secret(sig_hashes[secret], sig.pk_nonce, secret, d));
+//      fmt::print("Hashing secret {} (l={}), {} -> {}\n", secret, d, sig_hashes[secret], hash_secret(sig_hashes[secret], sig.pk_nonce, secret, d));
       sig_hashes[secret] = hash_secret(sig_hashes[secret], sig.pk_nonce, secret, d);
     }
-     fmt::print("Secret {} should have hashed to {}\n", secret, sig_hashes[secret]);
+//     fmt::print("Secret {} should have hashed to {}\n", secret, sig_hashes[secret]);
+  }
+
+  /*print out verification config data*/
+  fmt::print(">>>Verification data output:\n");
+  fmt::print("L1: {}, L2: {}, SecretsPerSig(L1+L2): {}, SecretsPerSecretKey(L1+L2): {}\n",
+             L1, L2, SecretsPerSignature, SecretsPerSecretKey);
+  fmt::print("W: {}, Log_w: {}, n: 256\n", SecretsDepth, LogSecretsDepth);
+  /*print out msg_secret_depths*/
+  for (size_t i = 0; i < SecretsPerSecretKey; i++) {
+    fmt::print("msg_secret_depths-{}: {}\n", i, static_cast<int>(msg_secret_depths[i]));
+    fmt::print("sig.secrets-{}: {}\n", i, static_cast<int>(sig.secrets[i]));
+//    fmt::print("sig.secrets-{}: {}\n", i, static_cast<int>(sig.secrets[i]));
   }
 
   auto hasher = crypto::hash::blake3_init();

@@ -37,7 +37,7 @@ size_t constexpr SecretsDepth = 1 << LogSecretsDepth; /*w*/
 // Old version with security less < 128bit
 // std::array<size_t, 9> constexpr PrecomputedL1 = {0,  128, 64, 43, 32,
 //                                                  26, 22,  19, 16};
-/*n = 128 bit*/
+/*n = 256 bit*/
 std::array<size_t, 7> constexpr PrecomputedL1 = {0, 128, 64, 43, 32, 26, 22};
 std::array<size_t, 7> constexpr PrecomputedL2 = {0,   8,  4,  3,  3,  2,  2};
 size_t constexpr L1 = PrecomputedL1[LogSecretsDepth];
