@@ -29,3 +29,9 @@ target_link_libraries(
         test-hsig
         ${CONAN_LIBS}
 )
+
+add_executable(test-memstore ${HEADER_TIDER} test/test-memstore.cpp)
+target_link_libraries(
+        test-memstore
+        ${CONAN_LIBS}
+)
