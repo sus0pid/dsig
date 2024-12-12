@@ -40,7 +40,7 @@ int main() {
       std::cout << "Duplicate set operation failed as expected: " << e.what() << std::endl;
     }
 
-    // Test 4: Barrier synchronization
+    // Test 4: Barrier synchronization--this test failed, probably because of incrementer failure.
     std::cout << "Test 4: Barrier synchronization..." << std::endl;
     try {
       size_t wait_for = 3;
