@@ -146,7 +146,7 @@ void Hsig::gen_signonce() {
 std::array<uint8_t, SecretsPerSignature> Hsig::wots_msg2depth(Hash const& pk_hash,
                                                               Nonce const& nonce,
                                                               uint8_t const* const begin,
-                                                              uint8_t const* const end)
+                                                              uint8_t const* const end) const
 {
   // Deviation from the original WOTS: we compute a larger hash
   // and use a subset of the bits aligned on bytes.

@@ -77,7 +77,7 @@ class Hsig {
   // calculate secret depth for given message
   std::array<uint8_t, SecretsPerSignature> wots_msg2depth(Hash const& pk_hash,
                                                           Nonce const& nonce,
-                      uint8_t const* const begin, uint8_t const* const end);
+                      uint8_t const* const begin, uint8_t const* const end) const;
 
 
 //  Foreground foreground;
