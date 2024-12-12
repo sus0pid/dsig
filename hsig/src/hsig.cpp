@@ -60,15 +60,15 @@ bool Hsig::wots_verify(WotsSignature const& sig, uint8_t const* const begin,
 //  auto const& exp_pk_hash = tree.leaves().at(sig.pk_sig.index);
   std::array<uint8_t, SecretsPerSignature> msg_secret_depths = {};
   /*using pk_hash directly for a toy example*/
-  Hsig::wots_msg2depth(pk_hash, sig.nonce, begin, end, msg_secret_depths);
+  wots_msg2depth(pk_hash, sig.nonce, begin, end, msg_secret_depths);
 
-  for (size_t secret = 0; secret < wots::SecretsPerSignature; secret++) {
+  for (size_t secret = 0; secret < SecretsPerSignature; secret++) {
      fmt::print("Secret {} has depth {}: {}\n", secret, msg_secret_depths[secret], sig_hashes[secret]);
     for (size_t d = msg_secret_depths[secret]; d + 1 < SecretsDepth; d++) {
-       fmt::print("Hashing secret {} (l={}), {} -> {}\n", secret, d, sig_hashes[secret], hash_secret(sig_hashes[secret], sig.pk_nonce, secret, d));
+      fmt::print("Hashing secret {} (l={}), {} -> {}\n", secret, d, sig_hashes[secret], hash_secret(sig_hashes[secret], sig.pk_nonce, secret, d));
       sig_hashes[secret] = hash_secret(sig_hashes[secret], sig.pk_nonce, secret, d);
     }
-     fmt::print("Secret {} should have hashed to {}\n", secret, hashes[secret]);
+     fmt::print("Secret {} should have hashed to {}\n", secret, sig_hashes[secret]);
   }
 
   auto hasher = crypto::hash::blake3_init();
