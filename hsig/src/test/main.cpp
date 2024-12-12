@@ -23,7 +23,7 @@ int main() {
 
   // Example arguments for DilithiumCrypto
   ProcId local_id = 1; // Example local process ID
-  std::vector<ProcId> all_ids = {1, 2, 3}; // Example list of process IDs
+  std::vector<ProcId> all_ids = {1}; // Example list of process IDs
   InfCrypto crypto(local_id, all_ids); // dilithium crypto
 
   Hsig hsig(config, local_id, crypto);
