@@ -39,17 +39,45 @@ std::string Hsig::sign(const std::string &data) {
   return "signature_" + data;
 }
 
+/*create wotsplus signature, refer to sk.hpp*/
 WotsSignature Hsig::wots_sign(uint8_t const* msg, size_t const msg_len) {
   /*Initialize the wots signature*/
   WotsSignature sig{pk_nonce, pk_sig.value(), nonce};
   /*compute the secret depths of the given message*/
-  wots_msg2depth(msg, msg + msg_len);
+  std::array<uint8_t, SecretsPerSignature> msg_secret_depths = {};
+  wots_msg2depth(pk_hash, nonce, msg, msg + msg_len, msg_secret_depths);
   for (size_t i = 0; i < SecretsPerSignature; i++) {
     auto const secret_depth = msg_secret_depths[i];
     std::memcpy(sig.secrets[i].data(), secrets[secret_depth][i].data(), sig.secrets[i].size());
   }
   return sig;
 }
+
+/*verify wotsplus signature, refer to pk.hpp*/
+bool Hsig::wots_verify(WotsSignature const& sig, uint8_t const* const begin,
+                uint8_t const* const end) const {
+  auto sig_hashes = sig.secrets;
+  /*TODO:find the pk_hash*/
+//  auto const& exp_pk_hash = tree.leaves().at(sig.pk_sig.index);
+  std::array<uint8_t, SecretsPerSignature> msg_secret_depths = {};
+  /*using pk_hash directly for a toy example*/
+  Hsig::wots_msg2depth(pk_hash, sig.nonce, begin, end, msg_secret_depths);
+
+  for (size_t secret = 0; secret < wots::SecretsPerSignature; secret++) {
+     fmt::print("Secret {} has depth {}: {}\n", secret, msg_secret_depths[secret], sig_hashes[secret]);
+    for (size_t d = msg_secret_depths[secret]; d + 1 < SecretsDepth; d++) {
+       fmt::print("Hashing secret {} (l={}), {} -> {}\n", secret, d, sig_hashes[secret], hash_secret(sig_hashes[secret], sig.pk_nonce, secret, d));
+      sig_hashes[secret] = hash_secret(sig_hashes[secret], sig.pk_nonce, secret, d);
+    }
+     fmt::print("Secret {} should have hashed to {}\n", secret, hashes[secret]);
+  }
+
+  auto hasher = crypto::hash::blake3_init();
+  crypto::hash::blake3_update(hasher, sig.pk_nonce);
+  crypto::hash::blake3_update(hasher, sig_hashes);
+  return std::memcmp(crypto::hash::blake3_final(hasher).data(), pk_hash.data(), pk_hash.size()) == 0;
+}
+
 
 bool Hsig::verify(const std::string &data, const std::string &signature) {
   // Dummy implementation
@@ -94,7 +122,7 @@ void Hsig::wots_pkgen() {
 //  state = Computed;
 //}
 
-/*dilithium signs the pk_hash*/
+/*eddsa/dilithium signs the pk_hash*/
 void Hsig::pk_infsign() {
   pk_sig = inf_crypto.sign(reinterpret_cast<uint8_t const*>(pk_hash.data()), pk_hash.size());
 }
@@ -118,8 +146,9 @@ void Hsig::gen_signonce() {
 }
 
 
-void Hsig::wots_msg2depth(uint8_t const* const begin,
-                            uint8_t const* const end) {
+void Hsig::wots_msg2depth(Hash const& pk_hash, Nonce const& nonce,
+                          uint8_t const* const begin, uint8_t const* const end,
+                          std::array<uint8_t, SecretsPerSignature> &msg_secret_depths) {
   // Deviation from the original WOTS: we compute a larger hash
   // and use a subset of the bits aligned on bytes.
   static_assert(LogSecretsDepth <= 8);

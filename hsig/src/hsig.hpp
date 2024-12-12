@@ -29,7 +29,15 @@ class Hsig {
   // Simplified methods
   std::string sign(const std::string &data);
   bool verify(const std::string &data, const std::string &signature);
+  /*sign message with wots signature scheme*/
   WotsSignature wots_sign(uint8_t const* msg, size_t const msg_len);
+  /*verify wots signature*/
+  bool wots_verify(WotsSignature const& sig, uint8_t const* const begin,
+                  uint8_t const* const end) const;
+  /*verify inf-crypto signature (eddsa for test), need to test with dilithium*/
+
+
+
 
 
 
@@ -49,9 +57,6 @@ class Hsig {
   Nonce pk_nonce; /*a nonce for pk generation*/
   Hash pk_hash; /*hash(pk)*/
   Nonce nonce; /*one unique nonce per signature*/
-
-  std::array<uint8_t, SecretsPerSignature> msg_secret_depths;
-
   //  std::optional<BatchedInfSignature> pk_sig;
   std::optional<InfSignature> pk_sig;
 
@@ -70,7 +75,9 @@ class Hsig {
   void gen_signonce();
 
   // calculate secret depth for given message
-  void wots_msg2depth(uint8_t const* const begin, uint8_t const* const end);
+  void wots_msg2depth(Hash const& pk_hash, Nonce const& nonce,
+                      uint8_t const* const begin, uint8_t const* const end,
+                      std::array<uint8_t, SecretsPerSignature> &msg_secret_depths);
 
 
 //  Foreground foreground;
