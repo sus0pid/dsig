@@ -43,8 +43,7 @@ WotsSignature Hsig::wots_sign(uint8_t const* msg, size_t const msg_len) {
   /*Initialize the wots signature*/
   WotsSignature sig{pk_nonce, pk_sig.value(), nonce};
   /*compute the secret depths of the given message*/
-  std::array<uint8_t, SecretsPerSignature> msg_secret_depths = {};
-  wots_msg2depth(pk_hash, nonce, msg, msg + msg_len, msg_secret_depths);
+  auto msg_secret_depths = wots_msg2depth(pk_hash, nonce, msg, msg + msg_len);
   for (size_t i = 0; i < SecretsPerSignature; i++) {
     auto const secret_depth = msg_secret_depths[i];
     std::memcpy(sig.secrets[i].data(), secrets[secret_depth][i].data(), sig.secrets[i].size());
@@ -58,9 +57,8 @@ bool Hsig::wots_verify(WotsSignature const& sig, uint8_t const* const begin,
   auto sig_hashes = sig.secrets;
   /*TODO:find the pk_hash*/
 //  auto const& exp_pk_hash = tree.leaves().at(sig.pk_sig.index);
-  std::array<uint8_t, SecretsPerSignature> msg_secret_depths = {};
   /*using pk_hash directly for a toy example*/
-  wots_msg2depth(pk_hash, sig.nonce, begin, end, msg_secret_depths);
+  auto msg_secret_depths = wots_msg2depth(pk_hash, sig.nonce, begin, end);
 
   for (size_t secret = 0; secret < SecretsPerSignature; secret++) {
      fmt::print("Secret {} has depth {}: {}\n", secret, msg_secret_depths[secret], sig_hashes[secret]);
@@ -145,12 +143,15 @@ void Hsig::gen_signonce() {
 }
 
 
-void Hsig::wots_msg2depth(Hash const& pk_hash, Nonce const& nonce,
-                          uint8_t const* const begin, uint8_t const* const end,
-                          std::array<uint8_t, SecretsPerSignature> &msg_secret_depths) {
+std::array<uint8_t, SecretsPerSignature> Hsig::wots_msg2depth(Hash const& pk_hash,
+                                                              Nonce const& nonce,
+                                                              uint8_t const* const begin,
+                                                              uint8_t const* const end)
+{
   // Deviation from the original WOTS: we compute a larger hash
   // and use a subset of the bits aligned on bytes.
   static_assert(LogSecretsDepth <= 8);
+  std::array<uint8_t, SecretsPerSignature> msg_secret_depths;
   std::array<uint8_t, L1> hash;
   std::array<uint8_t, 8> checksum = {};  // 8 is more than necessary
 
@@ -180,6 +181,7 @@ void Hsig::wots_msg2depth(Hash const& pk_hash, Nonce const& nonce,
     msg_secret_depths[secret] = (*reinterpret_cast<uint16_t const*>(&checksum[byte_offset]) >>
                              remaining_bit_offset) & SecretsDepthMask;
   }
+  return msg_secret_depths;
 }
 
 
