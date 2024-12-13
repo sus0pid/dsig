@@ -37,7 +37,7 @@ void print_statistics(const std::string& label, const std::vector<T>& times) {
   }
 
   auto sum = std::accumulate(times.begin(), times.end(), 0LL);
-  auto average = static_cast<double>(sum) / times.size();
+  auto average = static_cast<double>(sum) / static_cast<double>(times.size());
   auto min_time = *std::min_element(times.begin(), times.end());
   auto max_time = *std::max_element(times.begin(), times.end());
 
