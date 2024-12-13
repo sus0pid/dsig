@@ -3,7 +3,7 @@ project(hsig CXX)
 
 include(${CMAKE_BINARY_DIR}/setup.cmake)
 dory_setup_cmake()
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-strict-overflow -Wno-packed")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-packed")
 
 # Set build time as a preprocessor definition
 string(TIMESTAMP BUILD_TIME "%Y-%m-%d %H:%M")
@@ -57,7 +57,7 @@ foreach(hash ${HASHING_SCHEME})
                 set(BINARY bench-wots-${readable_hash}-${logb}-${logw})
                 message(STATUS "Creating target: ${BINARY}")
                 add_executable(${BINARY}
-                        ${HEADER_TIDER} test/wots_bench.cpp ${COMMON_SOURCE})
+                        ${HEADER_TIDER} test/wots_bench.cpp)
                 target_compile_definitions(
                         ${BINARY}
                         PUBLIC HASHING_SCHEME=${hash}
