@@ -3,7 +3,10 @@
 #include <string>
 #include <vector>
 #include <cmath>
+#include <algorithm>
+#include <numeric>
 #include <fmt/core.h>
+
 #include <dory/crypto/asymmetric/switchable-crypto.hpp>
 #include "../hsig.hpp"
 
@@ -28,23 +31,28 @@ std::vector<long long> benchmark(size_t iterations, F function) {
 
 template <typename T>
 void print_statistics(const std::string& label, const std::vector<T>& times) {
+  if (times.empty()) {
+    std::cerr << "No data to compute statistics for " << label << std::endl;
+    return;
+  }
+
   auto sum = std::accumulate(times.begin(), times.end(), 0LL);
-  double average = static_cast<double>(sum) / times.size();
+  auto average = static_cast<double>(sum) / times.size();
   auto min_time = *std::min_element(times.begin(), times.end());
   auto max_time = *std::max_element(times.begin(), times.end());
 
   double variance = 0.0;
   for (auto time : times) {
-    variance += (time - average) * (time - average);
+    variance += (static_cast<double>(time) - average) * (static_cast<double>(time) - average);
   }
-  variance /= times.size();
+  variance /= static_cast<double>(times.size());
   double stddev = std::sqrt(variance);
 
-  fmt::print("{} Statistics:\n", label);
-  fmt::print("  Average: {:.2f} µs\n", average);
-  fmt::print("  Min: {} µs\n", min_time);
-  fmt::print("  Max: {} µs\n", max_time);
-  fmt::print("  StdDev: {:.2f} µs\n", stddev);
+  std::cout << label << " Statistics:\n";
+  std::cout << "  Average: " << average << " microseconds\n";
+  std::cout << "  Min: " << min_time << " microseconds\n";
+  std::cout << "  Max: " << max_time << " microseconds\n";
+  std::cout << "  Std Dev: " << stddev << " microseconds\n";
 }
 
 int main() {
