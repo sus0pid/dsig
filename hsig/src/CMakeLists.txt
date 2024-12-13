@@ -10,6 +10,7 @@ string(TIMESTAMP BUILD_TIME "%Y-%m-%d %H:%M")
 add_definitions(-DBINARY_BUILD_TIME="${BUILD_TIME}")
 message(STATUS "Conan libraries: ${CONAN_LIBS}")
 
+set(HASHING_SCHEMES "blake3" "siphash" "haraka" "sha256")
 set(HASHING_SCHEME 0)
 set(LOG_INF_BATCH_SIZE 7)
 set(WOTS_LOG_SECRETS_DEPTH 2)
@@ -54,6 +55,7 @@ foreach(hash ${HASHING_SCHEME})
         foreach(logw ${WOTS_LOG_SECRETS_DEPTH})
                 list(GET HASHING_SCHEMES ${hash} readable_hash)
                 set(BINARY bench-wots-${readable_hash}-${logb}-${logw})
+                message(STATUS "Creating target: ${BINARY}")
                 add_executable(${BINARY}
                         ${HEADER_TIDER} test/wots_bench.cpp ${COMMON_SOURCE})
                 target_compile_definitions(
