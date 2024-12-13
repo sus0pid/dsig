@@ -31,7 +31,7 @@ class EddsaCrypto {
 
   EddsaCrypto(ProcId local_id, std::vector<ProcId> const &all_ids)
       : my_id{local_id}, store{nspace}, LOGGER_INIT(logger, "Hsig") {
-    crypto_impl::init();
+    crypto_impl::init(); // create key pair
 
     LOGGER_INFO(logger, "Publishing my EdDSA key (process {})", my_id);
     crypto_impl::publish_pub_key(fmt::format("{}-dsig-pubkey", local_id));
