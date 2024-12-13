@@ -35,13 +35,6 @@ target_link_libraries(
         ${CONAN_LIBS}
 )
 
-# benchmark_wots with different hash algo
-add_executable(bench_wots ${HEADER_TIDER} test/test-memstore.cpp)
-target_link_libraries(
-        test-memstore
-        ${CONAN_LIBS}
-)
-
 # WOTS
 # cmake-format: off
 # HashingSchemes { Blake3 = 0, SipHash = 1, Haraka = 2, SHA256 = 3 };
@@ -57,7 +50,7 @@ foreach(hash ${HASHING_SCHEME})
                 set(BINARY bench-wots-${readable_hash}-${logb}-${logw})
                 message(STATUS "Creating target: ${BINARY}")
                 add_executable(${BINARY}
-                        ${HEADER_TIDER} test/wots_bench.cpp)
+                        ${HEADER_TIDER} test/wots_bench.cpp hsig.cpp)
                 target_compile_definitions(
                         ${BINARY}
                         PUBLIC HASHING_SCHEME=${hash}
