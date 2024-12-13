@@ -26,14 +26,6 @@ int main() {
   std::vector<ProcId> all_ids = {1}; // Example list of process IDs
   InfCrypto crypto(local_id, all_ids); // dilithium crypto
 
-
-//  std::string signature = hsig.sign(data);
-
-//  if (hsig.verify(data, signature)) {
-//    std::cout << "Verification succeeded!" << std::endl;
-//  } else {
-//    std::cout << "Verification failed!" << std::endl;
-//  }
   Hsig hsig(config, local_id, crypto);
   std::string data = "Test message";
   uint8_t const* msg = reinterpret_cast<const uint8_t*>(data.data());
