@@ -1,0 +1,17 @@
+[Hsig:info] Publishing my EdDSA key (process 1)
+[Hsig:info] Waiting for all processes ({1}) to publish their keys
+Initializing Hsig with ServiceID: 1
+Wots key generation...
+wots hashing pk...
+wots signature nonce...
+wots_sign Statistics:
+  Average: 0.01 microseconds
+  Min: 0 microseconds
+  Max: 10 microseconds
+  Std Dev: 0.31607 microseconds
+wots_verify Statistics:
+  Average: 3.001 microseconds
+  Min: 3 microseconds
+  Max: 4 microseconds
+  Std Dev: 0.031607 microseconds
+Destroying Hsig instance.
