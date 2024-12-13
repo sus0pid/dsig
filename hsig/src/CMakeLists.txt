@@ -3,7 +3,7 @@ project(hsig CXX)
 
 include(${CMAKE_BINARY_DIR}/setup.cmake)
 dory_setup_cmake()
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-packed")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-strict-overflow -Wno-packed")
 
 # Set build time as a preprocessor definition
 string(TIMESTAMP BUILD_TIME "%Y-%m-%d %H:%M")
